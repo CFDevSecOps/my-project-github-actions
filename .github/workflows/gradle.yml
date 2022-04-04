@@ -31,15 +31,13 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    jobs:
-      build:
-         runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build & Push Image
-      run: |
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: nanajanashia/demo-app
+        registry: docker.io
+        run: |
         echo "${{ secrets.DOCKER_ACCESS_TOKEN }}" | docker login -u "cfdevsecopsdemo" --password-stdin
         docker image build -t cfdevsecopsdemo/gitaction:latest .
         docker push cfdevsecopsdemo/gitaction:latest
-    
+         
